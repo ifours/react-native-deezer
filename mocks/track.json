@@ -1,0 +1,11 @@
+{
+  "album": {
+    "cover": "https://api.deezer.com/album/11625056/image",
+    "title": "Breathe Again"
+  },
+  "id":"112083430",
+  "title":"Beyond the Stars",
+  "artist": {
+    "name": "Spoken"
+  }
+}
