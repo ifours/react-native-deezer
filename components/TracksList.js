@@ -11,9 +11,6 @@ import Item from './TracksItem';
 const track = require('../mocks/track');
 
 export default class TracksList extends Component {
-  state = {
-    tracks: [track, track, track,track, track, track,track, track, track,track, track, track]
-  };
 
   renderItem(track, index) {
     return <Item key={index} {...track} />;
@@ -22,7 +19,7 @@ export default class TracksList extends Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        {this.state.tracks.map(this.renderItem, this)}
+        {this.props.tracks.map(this.renderItem, this)}
       </ScrollView>
     );
   }
