@@ -1,5 +1,4 @@
 import React, {
-  Component,
   View,
   Text,
   Image,
@@ -8,6 +7,9 @@ import React, {
 } from 'react-native';
 
 import DeezerManager from '../services/DeezerManager';
+import Cover from './Cover';
+import Component from './Component'
+import CoverEqualizer from './CoverEqualizer';
 
 export default class TracksItem extends Component {
 
@@ -18,7 +20,7 @@ export default class TracksItem extends Component {
   }
 
   playTrack() {
-    DeezerManager.playTrack(this.props.id);
+    this.props.playTrackWithIndex(this.props.index);
   }
 
   showUnderlay() {
@@ -30,7 +32,7 @@ export default class TracksItem extends Component {
   }
 
   render() {
-    let { title, artist: { name: artistName } , album: { cover , title: albumTitle } } = this.props;
+    let { isPlaying, title, artist: { name: artistName } , album: { cover , title: albumTitle } } = this.props;
 
     return (
       <TouchableHighlight
@@ -41,16 +43,18 @@ export default class TracksItem extends Component {
         onHideUnderlay={this.hideUnderlay}>
         <View>
           <View ref={(view) => this.view = view} style={styles.row}>
-            <Image
+            <Cover
               style={styles.albumCover}
-              source={{uri: cover }} />
-              <View style={styles.info}>
-                <Text style={styles.titleText} numberOfLines={1}>{title}</Text>
-                <Text style={styles.artistAndAlbumText} numberOfLines={1}>
-                  <Text style={styles.artistNameText} >{artistName}</Text>
-                  <Text style={styles.albumTitleText}>{' - '}{albumTitle}</Text>
-                </Text>
-              </View>
+              source={{uri: cover }}>
+              {isPlaying && <CoverEqualizer isPlaying={isPlaying} />}
+            </Cover>
+            <View style={styles.info}>
+              <Text style={styles.titleText} numberOfLines={1}>{title}</Text>
+              <Text style={styles.artistAndAlbumText} numberOfLines={1}>
+                <Text style={styles.artistNameText} >{artistName}</Text>
+                <Text style={styles.albumTitleText}>{' - '}{albumTitle}</Text>
+              </Text>
+            </View>
           </View>
         </View>
       </TouchableHighlight>
