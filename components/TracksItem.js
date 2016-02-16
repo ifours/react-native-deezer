@@ -7,25 +7,51 @@ import React, {
   StyleSheet,
 } from 'react-native';
 
+import DeezerManager from '../services/DeezerManager';
+
 export default class TracksItem extends Component {
+
+  componentWillMount() {
+    this.playTrack = this.playTrack.bind(this);
+    this.showUnderlay = this.showUnderlay.bind(this);
+    this.hideUnderlay = this.hideUnderlay.bind(this);
+  }
+
+  playTrack() {
+    DeezerManager.playTrack(this.props.id);
+  }
+
+  showUnderlay() {
+    this.view && this.view.setNativeProps({style: { backgroundColor: '#eee' }});
+  }
+
+  hideUnderlay() {
+    this.view && this.view.setNativeProps({style: { backgroundColor: '#fff' }});
+  }
+
   render() {
     let { title, artist: { name: artistName } , album: { cover , title: albumTitle } } = this.props;
 
     return (
       <TouchableHighlight
-        underlayColor="#fff"
-        style={styles.container} >
-        <View style={styles.row}>
-          <Image
-            style={styles.albumCover}
-            source={{uri: cover }} />
-            <View style={styles.info}>
-              <Text style={styles.titleText} numberOfLines={1}>{title}</Text>
-              <Text style={styles.artistAndAlbumText} numberOfLines={1}>
-                <Text style={styles.artistNameText} >{artistName}</Text>
-                <Text style={styles.albumTitleText}>{' - '}{albumTitle}</Text>
-              </Text>
-            </View>
+        onPress={this.playTrack}
+        activeOpacity={1}
+        style={styles.container}
+        onShowUnderlay={this.showUnderlay}
+        onHideUnderlay={this.hideUnderlay}>
+        <View>
+          <View ref={(view) => this.view = view} style={styles.row}>
+            <Image
+              style={styles.albumCover}
+              source={{uri: cover }} />
+              <View style={styles.info}>
+                <Text style={styles.titleText} numberOfLines={1}>{title}</Text>
+                <Text style={styles.artistAndAlbumText} numberOfLines={1}>
+                  <Text style={styles.artistNameText} >{artistName}</Text>
+                  <Text style={styles.albumTitleText}>{' - '}{albumTitle}</Text>
+                </Text>
+              </View>
+          </View>
         </View>
       </TouchableHighlight>
     );
@@ -35,11 +61,11 @@ export default class TracksItem extends Component {
 const styles = StyleSheet.create({
   container: {
     marginBottom: 8,
-    backgroundColor: '#fff',
   },
 
   row: {
     height: 64,
+    backgroundColor: '#fff',
     flexDirection: 'row',
   },
 
