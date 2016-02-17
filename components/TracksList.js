@@ -8,24 +8,42 @@ import React, {
 
 import Item from './TracksItem';
 import DeezerManager from '../services/DeezerManager';
+import PlayerStore from '../stores/Player';
+import PlayerActions from '../actions/Player';
 
 const track = require('../mocks/track');
 
 export default class TracksList extends Component {
 
   state = {
-    currentTrack: { id: -1 }
+    currentTrack: PlayerStore.getCurrentTrack(),
+    isPlaying: PlayerStore.isPlaying(),
+    tracks: PlayerStore.getTracks()
   };
 
   componentWillMount() {
     this.playTrackWithIndex = this.playTrackWithIndex.bind(this);
+
+    PlayerStore.addChangeListener(this._onChange.bind(this));
+  }
+
+  _onChange() {
+    this.setState({
+      currentTrack: PlayerStore.getCurrentTrack(),
+      tracks: PlayerStore.getTracks(),
+      isPlaying: PlayerStore.isPlaying(),
+    });
   }
 
   playTrackWithIndex(index) {
-    let track = this.props.tracks[index];
-    DeezerManager.playTrack(track.id);
+    let track = this.state.tracks[index];
 
-    this.setState({ currentTrack: track });
+    if (track === this.state.currentTrack) {
+      this.state.isPlaying ? PlayerActions.pause() : PlayerActions.play();
+    } else {
+      PlayerActions.setCurrentTrackWithIndex(track, index);
+    }
+
   }
 
   renderItem(track, index) {
@@ -33,14 +51,14 @@ export default class TracksList extends Component {
       key={index}
       index={index}
       playTrackWithIndex={this.playTrackWithIndex}
-      isPlaying={track.id === this.state.currentTrack.id}
+      isCurrent={track.id === this.state.currentTrack.id}
       {...track} />;
   }
 
   render() {
     return (
       <ScrollView style={styles.container}>
-        {this.props.tracks.map(this.renderItem, this)}
+        {this.state.tracks.map(this.renderItem, this)}
       </ScrollView>
     );
   }

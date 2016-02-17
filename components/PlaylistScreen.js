@@ -9,19 +9,16 @@ import React, {
 import TracksList from './TracksList';
 import DeezerManager from '../services/DeezerManager';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
+import PlayerActions from '../actions/Player';
 
 export default class PlaylistScreen extends Component {
-
-  state = {
-    tracks: []
-  };
 
   connect() {
     (async () => {
       await DeezerManager.connect();
 
       let tracks = await DeezerManager.getFavoritesTracks();
-      this.setState({ tracks: tracks.reverse() });
+      PlayerActions.setTracks(tracks.reverse());
     })();
   }
 
@@ -46,7 +43,7 @@ export default class PlaylistScreen extends Component {
             </View>
           </TouchableHighlight>
         </View>
-        <TracksList tracks={this.state.tracks} />
+        <TracksList />
       </View>
     );
   }

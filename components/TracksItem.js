@@ -32,7 +32,7 @@ export default class TracksItem extends Component {
   }
 
   render() {
-    let { isPlaying, title, artist: { name: artistName } , album: { cover , title: albumTitle } } = this.props;
+    let { isCurrent, title, artist: { name: artistName } , album: { cover , title: albumTitle } } = this.props;
 
     return (
       <TouchableHighlight
@@ -46,7 +46,7 @@ export default class TracksItem extends Component {
             <Cover
               style={styles.albumCover}
               source={{uri: cover }}>
-              {isPlaying && <CoverEqualizer isPlaying={isPlaying} />}
+              {isCurrent && <CoverEqualizer />}
             </Cover>
             <View style={styles.info}>
               <Text style={styles.titleText} numberOfLines={1}>{title}</Text>
