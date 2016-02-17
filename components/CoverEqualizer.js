@@ -2,6 +2,7 @@
 'use strict';
 import React from 'react-native';
 import EqualizerBar from './EqualizerBar';
+import PlayerStore from '../stores/Player';
 
 const {
   Component,
@@ -11,10 +12,26 @@ const {
 
 class CoverEqualizer extends Component {
 
+  state = {
+    isPlaying: PlayerStore.isPlaying()
+  };
+
+  componentWillMount() {
+    PlayerStore.addChangeListener(() => {
+      !this.isUnmount && this.setState({
+        isPlaying: PlayerStore.isPlaying()
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.isUnmount = true;
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <EqualizerBar isPlaying={this.props.isPlaying} />
+        <EqualizerBar isPlaying={this.state.isPlaying} />
       </View>
     );
   }
