@@ -17,15 +17,19 @@ class CoverEqualizer extends Component {
   };
 
   componentWillMount() {
-    PlayerStore.addChangeListener(() => {
-      !this.isUnmount && this.setState({
-        isPlaying: PlayerStore.isPlaying()
-      });
+    this.onChange = this.onChange.bind(this);
+    PlayerStore.addChangeListener(this.onChange);
+  }
+
+  onChange() {
+    !this.isUnmount && this.setState({
+      isPlaying: PlayerStore.isPlaying()
     });
   }
 
   componentWillUnmount() {
     this.isUnmount = true;
+    PlayerStore.removeChangeListener(this.onChange);
   }
 
   render() {

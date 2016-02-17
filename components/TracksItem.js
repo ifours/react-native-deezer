@@ -10,6 +10,7 @@ import DeezerManager from '../services/DeezerManager';
 import Cover from './Cover';
 import Component from './Component'
 import CoverEqualizer from './CoverEqualizer';
+import PlayerProgressBar from './PlayerProgressBar';
 
 export default class TracksItem extends Component {
 
@@ -54,6 +55,7 @@ export default class TracksItem extends Component {
                 <Text style={styles.artistNameText} >{artistName}</Text>
                 <Text style={styles.albumTitleText}>{' - '}{albumTitle}</Text>
               </Text>
+              {isCurrent && <PlayerProgressBar />}
             </View>
           </View>
         </View>
