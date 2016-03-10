@@ -5,7 +5,7 @@ This project was build as part of [RSConf 2016](http://2016.conf.rollingscopes.c
 ## Demo
 
 ### Mobile App (iOS)
-<img src="assets/deezer.gif" width="320
+<img src="assets/deezer.gif" width="320 />
 
 ## Running the project
 - [react-native requirements](https://facebook.github.io/react-native/docs/getting-started.html#requirements)
